@@ -1,0 +1,264 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "My API Documentation",
+    "description": "My API Documentation with all specifications",
+    "contact": {
+      "name": "Darlan Thiago",
+      "email": "darlanthiago53@gmail.com"
+    }
+  },
+  "paths": {
+    "/roles": {
+      "post": {
+        "tags": ["Roles"],
+        "summary": "Create a role",
+        "description": "Create a new role",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Role Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Role already exists"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Roles"],
+        "summary": "List all roles",
+        "description": "Get all roles paginated",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Number of the page",
+            "schema": {
+              "type": "integer",
+              "examaple": "page=1"
+            },
+            "style": "label"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Quantity of the content to be returned",
+            "schema": {
+              "type": "integer"
+            },
+            "style": "label"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "per_page": 15,
+                  "total": 2,
+                  "current_page": 1,
+                  "data": [
+                    {
+                      "id": "6cf04a96-119d-4208-85ab-90635adf5836",
+                      "created_at": "2024-01-29T23:43:08.000Z",
+                      "name": "Content Managers 4"
+                    },
+                    {
+                      "id": "272a6c5c-2b1e-4274-95ca-1d224ffb1087",
+                      "created_at": "2024-01-27T00:37:02.000Z",
+                      "name": "Content Managers 3"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/roles/{id}": {
+      "put": {
+        "tags": ["Roles"],
+        "summary": "Update a role",
+        "description": "Update a role",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identify a role",
+            "schema": {
+              "type": "string"
+            },
+            "example": "6cf04a96-119d-4208-85ab-90635adf5836",
+            "style": "label"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "6cf04a96-119d-4208-85ab-90635adf5836",
+                  "created_at": "2024-01-29T23:43:08.000Z",
+                  "name": "Content Managers 4"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Role not found"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Roles"],
+        "summary": "Find a role by ID",
+        "description": "Find a role by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identify a role",
+            "schema": {
+              "type": "string"
+            },
+            "example": "6cf04a96-119d-4208-85ab-90635adf5836",
+            "style": "label"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "6cf04a96-119d-4208-85ab-90635adf5836",
+                  "created_at": "2024-01-29T23:43:08.000Z",
+                  "name": "Content Managers 4"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Role not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Roles"],
+        "summary": "Delete a role by ID",
+        "description": "Delete a role by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identify a role",
+            "schema": {
+              "type": "string"
+            },
+            "example": "6cf04a96-119d-4208-85ab-90635adf5836",
+            "style": "label"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Not content"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Role not found"
+          }
+        }
+      }
+    }
+  }
+}
