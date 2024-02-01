@@ -1,14 +1,19 @@
 import { Role } from "@roles/entities/Role";
-import { RolesRepository } from "@roles/repositories/RolesRepository";
+import { IRolesRepository } from "@roles/repositories/IRolesRepository";
 import { AppError } from "@shared/errors/AppError";
+import { inject, injectable } from "tsyringe";
 
 type UpdateRoleDTO = {
   id: string;
   name: string;
 };
 
+@injectable()
 export class UpdateRoleUseCase {
-  constructor(private roleRepository: RolesRepository) {}
+  constructor(
+    @inject("RolesRepository")
+    private roleRepository: IRolesRepository
+  ) {}
 
   async execute(props: UpdateRoleDTO): Promise<Role> {
     const role = await this.roleRepository.findById(props.id);
