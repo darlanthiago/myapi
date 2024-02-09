@@ -9,12 +9,14 @@ import { route } from "./routes";
 import { AppError } from "@shared/errors/AppError";
 
 import swaggerFile from "../../../swagger.json";
+import uploadConfig from "@config/upload";
 
 import "@shared/container";
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use('/files', express.static(uploadConfig.directory));
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use(route);
 app.use(errors());
