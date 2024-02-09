@@ -1,20 +1,29 @@
 import { Request, Response, Router } from "express";
 import { celebrate, Joi, Segments } from "celebrate";
 import { container } from "tsyringe";
+import multer from "multer";
 
 import { CreateUserController } from "@users/useCases/createUser/CreateUserController";
 import { ListUsersController } from "@users/useCases/listUsers/ListUsersUseCaseController";
 import { CreateLoginController } from "@users/useCases/createLogin/CreateLoginController";
 import { isAuthenticated } from "@shared/http/middlewares/isAuthenticated";
 
+import uploadConfig from "@config/upload";
+import { UpdateAvatarController } from "@users/useCases/updateAvatar/UpdateAvatarController";
+
 const usersRouter = Router();
 
 const createUserController = container.resolve(CreateUserController);
 const listUsersController = container.resolve(ListUsersController);
 const createLoginController = container.resolve(CreateLoginController);
+const updateAvatarController = container.resolve(UpdateAvatarController);
+
+const upload = multer(uploadConfig);
+
 
 usersRouter.post(
   "/",
+  isAuthenticated,
   celebrate({
     [Segments.BODY]: {
       name: Joi.string().required(),
@@ -53,6 +62,15 @@ usersRouter.post(
   }),
   (req: Request, res: Response) => {
     return createLoginController.handle(req, res);
+  }
+);
+
+usersRouter.patch(
+  "/avatar",
+  isAuthenticated,
+  upload.single("avatar"),
+  (req: Request, res: Response) => {
+    return updateAvatarController.handle(req, res);
   }
 );
 

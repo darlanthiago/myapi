@@ -11,6 +11,7 @@ export class UsersTable1707270238021 implements MigrationInterface {
           { name: "email", type: "varchar", isUnique: true },
           { name: "password", type: "varchar" },
           { name: "is_admin", type: "boolean", default: false },
+          { name: "avatar", type: "varchar", isNullable: true },
           { name: "created_at", type: "timestamp", default: "now()" },
           { name: "updated_at", type: "timestamp", default: "now()" },
         ],

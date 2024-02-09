@@ -30,6 +30,9 @@ export class User {
   @Column()
   is_admin: boolean;
 
+  @Column()
+  avatar?: string;
+
   @ManyToOne(() => Role, { cascade: true })
   role: Role;
 
