@@ -6,6 +6,6 @@ export default {
   refresh_token: {
     secret: process.env.REFRESH_SECRET,
     expiresIn: process.env.REFRESH_EXPIRES_IN,
-    refreshDuration: process.env.REFRESH_DURATION,
+    refreshDuration: Number(process.env.REFRESH_DURATION),
   },
 };

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Secret, verify } from "jsonwebtoken";
+import { Secret, decode, verify } from "jsonwebtoken";
 
 import { AppError } from "@shared/errors/AppError";
 
@@ -9,7 +9,7 @@ type JwtPayloadProps = {
   sub: string;
 };
 
-export const isAuthenticated = (
+export const addUserInfoToRequest = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -35,14 +35,14 @@ export const isAuthenticated = (
   }
 
   try {
-    const decodedToken = verify(token, authConfig.jwt.secret as Secret);
+    const decodedToken = decode(token);
     const { sub } = decodedToken as JwtPayloadProps;
     req.user = { id: sub };
     return next();
   } catch (error) {
     return res.status(401).json({
       error: true,
-      code: "token.expired",
+      code: "token.invalid",
       message: "Access token is required",
     });
   }
