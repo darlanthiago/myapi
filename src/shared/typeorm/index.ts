@@ -6,6 +6,7 @@ import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 
 import { Role } from "@roles/entities/Role";
 import { User } from "@users/entities/Users";
+import { RefreshToken } from "@users/entities/RefreshToken";
 
 import { CreateRolesTable1706279650811 } from "./migrations/1706279650811-CreateRolesTable";
 import { UsersTable1707270238021 } from "./migrations/1707270238021-UsersTable";
@@ -19,7 +20,7 @@ const dataSource = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: [Role, User],
+  entities: [Role, User, RefreshToken],
   migrations: [
     CreateRolesTable1706279650811,
     UsersTable1707270238021,
