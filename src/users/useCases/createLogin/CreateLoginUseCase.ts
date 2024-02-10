@@ -7,6 +7,7 @@ import { IUsersRepository } from "@users/repositories/IUsersRepository";
 import { AppError } from "@shared/errors/AppError";
 
 import jwtConfig from "@config/auth";
+import { IRefreshTokenRepository } from "@users/repositories/IRefreshTokenRepository";
 
 export type CreateLoginDTO = {
   email: string;
@@ -15,14 +16,17 @@ export type CreateLoginDTO = {
 
 type IResponse = {
   user: User;
-  token: string;
+  access_token: string;
+  refresh_token: string;
 };
 
 @injectable()
 export class CreateLoginUseCase {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+    @inject("RefreshTokenRepository")
+    private refreshTokenRepository: IRefreshTokenRepository
   ) {}
 
   async execute(props: CreateLoginDTO): Promise<IResponse> {
@@ -38,11 +42,27 @@ export class CreateLoginUseCase {
       throw new AppError("E-mail/Password does not match", 401);
     }
 
-    const token = sign({}, jwtConfig.jwt.secret, {
+    const accessToken = sign({}, jwtConfig.jwt.secret, {
       subject: user.id,
       expiresIn: jwtConfig.jwt.expiresIn,
     });
 
-    return { user, token };
+    const expires = new Date(
+      Date.now() + jwtConfig.refresh_token.refreshDuration
+    );
+
+    const refreshToken = sign({}, jwtConfig.refresh_token.secret, {
+      subject: user.id,
+      expiresIn: jwtConfig.refresh_token.expiresIn,
+    });
+
+    await this.refreshTokenRepository.create({
+      user_id: user.id,
+      token: refreshToken,
+      expires,
+      valid: true,
+    });
+
+    return { user, access_token: accessToken, refresh_token: refreshToken };
   }
 }
