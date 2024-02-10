@@ -10,6 +10,7 @@ import { User } from "@users/entities/Users";
 import { CreateRolesTable1706279650811 } from "./migrations/1706279650811-CreateRolesTable";
 import { UsersTable1707270238021 } from "./migrations/1707270238021-UsersTable";
 import { AddRoleIdToUsersTable1707270574917 } from "./migrations/1707270574917-AddRoleIdToUsersTable";
+import { CreateRefreshTokensTable1707582807052 } from "./migrations/1707582807052-CreateRefreshTokensTable";
 
 const dataSource = new DataSource({
   type: "mariadb",
@@ -23,6 +24,7 @@ const dataSource = new DataSource({
     CreateRolesTable1706279650811,
     UsersTable1707270238021,
     AddRoleIdToUsersTable1707270574917,
+    CreateRefreshTokensTable1707582807052,
   ],
   namingStrategy: new SnakeNamingStrategy(),
 });
