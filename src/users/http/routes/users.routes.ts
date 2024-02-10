@@ -10,6 +10,7 @@ import { isAuthenticated } from "@shared/http/middlewares/isAuthenticated";
 
 import uploadConfig from "@config/upload";
 import { UpdateAvatarController } from "@users/useCases/updateAvatar/UpdateAvatarController";
+import { ShowProfileController } from "@users/useCases/showProfile/ShowProfileController";
 
 const usersRouter = Router();
 
@@ -17,9 +18,9 @@ const createUserController = container.resolve(CreateUserController);
 const listUsersController = container.resolve(ListUsersController);
 const createLoginController = container.resolve(CreateLoginController);
 const updateAvatarController = container.resolve(UpdateAvatarController);
+const showProfiletarController = container.resolve(ShowProfileController);
 
 const upload = multer(uploadConfig);
-
 
 usersRouter.post(
   "/",
@@ -51,6 +52,10 @@ usersRouter.get(
     return listUsersController.handle(req, res);
   }
 );
+
+usersRouter.get("/profile", isAuthenticated, (req: Request, res: Response) => {
+  return showProfiletarController.handle(req, res);
+});
 
 usersRouter.post(
   "/login",
