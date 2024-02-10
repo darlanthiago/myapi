@@ -18,7 +18,7 @@ export class RefreshToken {
   @Column()
   valid: boolean;
 
-  @CreateDateColumn()
+  @Column()
   expires: Date;
 
   constructor() {
