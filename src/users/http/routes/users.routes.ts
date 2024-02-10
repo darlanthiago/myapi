@@ -12,6 +12,8 @@ import uploadConfig from "@config/upload";
 import { UpdateAvatarController } from "@users/useCases/updateAvatar/UpdateAvatarController";
 import { ShowProfileController } from "@users/useCases/showProfile/ShowProfileController";
 import { UpdateProfileController } from "@users/useCases/updateProfile/UpdateProfileController";
+import { CreateAccessAndRefreshTokenController } from "@users/useCases/createAccessAndRefreshToken/CreateAccessAndRefreshTokenController";
+import { addUserInfoToRequest } from "../middlewares/addUserInfoToRequest";
 
 const usersRouter = Router();
 
@@ -19,8 +21,11 @@ const createUserController = container.resolve(CreateUserController);
 const listUsersController = container.resolve(ListUsersController);
 const createLoginController = container.resolve(CreateLoginController);
 const updateAvatarController = container.resolve(UpdateAvatarController);
-const showProfiletarController = container.resolve(ShowProfileController);
-const updateProfiletarController = container.resolve(UpdateProfileController);
+const showProfileController = container.resolve(ShowProfileController);
+const updateProfileController = container.resolve(UpdateProfileController);
+const createAccessAndRefreshTokenController = container.resolve(
+  CreateAccessAndRefreshTokenController
+);
 
 const upload = multer(uploadConfig);
 
@@ -56,7 +61,7 @@ usersRouter.get(
 );
 
 usersRouter.get("/profile", isAuthenticated, (req: Request, res: Response) => {
-  return showProfiletarController.handle(req, res);
+  return showProfileController.handle(req, res);
 });
 
 usersRouter.put(
@@ -75,7 +80,7 @@ usersRouter.put(
     },
   }),
   (req: Request, res: Response) => {
-    return updateProfiletarController.handle(req, res);
+    return updateAvatarController.handle(req, res);
   }
 );
 
@@ -89,6 +94,19 @@ usersRouter.post(
   }),
   (req: Request, res: Response) => {
     return createLoginController.handle(req, res);
+  }
+);
+
+usersRouter.post(
+  "/refresh_token",
+  addUserInfoToRequest,
+  celebrate({
+    [Segments.BODY]: {
+      refresh_token: Joi.string().required(),
+    },
+  }),
+  (req: Request, res: Response) => {
+    return createAccessAndRefreshTokenController.handle(req, res);
   }
 );
 

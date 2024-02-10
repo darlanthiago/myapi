@@ -30,7 +30,7 @@ export class CreateAccessAndRefreshTokenUseCase {
   ) {}
 
   async execute(props: CreateAccessAndRefreshTokenDTO): Promise<IResponse> {
-    const user = await this.usersRepository.findByEmail(props.user_id);
+    const user = await this.usersRepository.findById(props.user_id);
 
     if (!user) {
       throw new AppError("User not found", 404);
